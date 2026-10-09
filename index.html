@@ -682,14 +682,18 @@
   const music = document.getElementById("forest-music");
   music.volume = 0.25;
 
-  function startMusic() {
-    music.play().catch(() => {});
+  
+function startMusic() {
+  if (music.paused) {
+    music.play().catch((error) => {
+      console.log("Music playback blocked:", error);
+    });
   }
+}
 
-  startMusic();
-
-  document.addEventListener("pointerdown", startMusic, { once: true });
-  document.addEventListener("keydown", startMusic, { once: true });
+document.addEventListener("pointerdown", startMusic);
+document.addEventListener("keydown", startMusic);
+document.addEventListener("touchstart", startMusic);
 </script>
 </body>
 </html>
