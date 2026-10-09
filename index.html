@@ -1,0 +1,678 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cottagecore Meadow</title>
+<style>
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #090d20;
+    font-family: monospace;
+  }
+
+  #meadow {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 280px;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(ellipse at 76% 57%, #26365d55, transparent 40%),
+      linear-gradient(180deg, #090d20 0%, #171532 47%, #23324a 75%, #101e2a 100%);
+    cursor: crosshair;
+    image-rendering: pixelated;
+  }
+
+  /* Moonlight */
+  .moon {
+    position: absolute;
+    top: 13%;
+    right: 16%;
+    width: 46px;
+    height: 46px;
+    background: #e4dcff;
+    box-shadow: 0 0 18px #b8a2ff88, 0 0 55px #8f72ff33;
+    border-radius: 50%;
+  }
+
+  .moon::after {
+    content: "";
+    position: absolute;
+    width: 43px;
+    height: 43px;
+    top: -8px;
+    left: 12px;
+    border-radius: 50%;
+    background: #11132b;
+  }
+
+  /* Tiny stars */
+  .star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #d6c9ff;
+    box-shadow: 0 0 7px #b79cff;
+    animation: twinkle 2.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from { opacity: .25; }
+    to { opacity: 1; }
+  }
+
+  /* Top-left emblem */
+  .emblem {
+    position: absolute;
+    z-index: 20;
+    top: 14px;
+    left: 14px;
+    padding: 9px 12px;
+    color: #e8deff;
+    background: #15162ce8;
+    border: 1px solid #9b78d777;
+    box-shadow: 3px 3px 0 #070b18;
+    font-size: 11px;
+    letter-spacing: .3px;
+    text-shadow: 0 0 8px #b69cff;
+  }
+
+  .emblem span { color: #c7ff8a; }
+
+  /* Distant hills */
+  .hill {
+    position: absolute;
+    bottom: 20%;
+    width: 125%;
+    height: 35%;
+    left: -12%;
+    background: #182c39;
+    clip-path: polygon(0 80%, 8% 55%, 17% 68%, 28% 24%,
+      39% 60%, 50% 35%, 63% 70%, 75% 29%,
+      88% 62%, 100% 35%, 100% 100%, 0 100%);
+  }
+
+  .hill.back {
+    bottom: 23%;
+    height: 30%;
+    background: #202744;
+    opacity: .8;
+    transform: translateX(8%);
+  }
+
+  /* Pixel foliage */
+  .forest {
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    background:
+      linear-gradient(90deg, transparent 0 4%, #132b2e 4% 8%, transparent 8% 12%),
+      linear-gradient(90deg, transparent 0 16%, #18352e 16% 22%, transparent 22% 28%),
+      linear-gradient(90deg, transparent 0 40%, #102a2b 40% 47%, transparent 47% 54%),
+      linear-gradient(90deg, transparent 0 73%, #19352d 73% 80%, transparent 80% 87%),
+      linear-gradient(180deg, #182e32, #0b1e25);
+    clip-path: polygon(0 38%, 5% 38%, 5% 18%, 11% 18%, 11% 35%,
+      19% 35%, 19% 7%, 27% 7%, 27% 36%, 35% 36%,
+      35% 20%, 43% 20%, 43% 39%, 53% 39%, 53% 10%,
+      61% 10%, 61% 35%, 69% 35%, 69% 4%, 77% 4%,
+      77% 32%, 88% 32%, 88% 15%, 95% 15%, 95% 37%,
+      100% 37%, 100% 100%, 0 100%);
+  }
+
+  /* Cottage */
+  .cottage {
+    position: absolute;
+    z-index: 2;
+    width: 116px;
+    height: 88px;
+    left: 68%;
+    bottom: 24%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 14px #c69bff20);
+  }
+
+  .roof {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 116px;
+    height: 43px;
+    background: #392d59;
+    clip-path: polygon(50% 0, 100% 80%, 90% 100%, 10% 100%, 0 80%);
+    border-bottom: 4px solid #594475;
+  }
+
+  .roof-shine {
+    position: absolute;
+    top: 11px;
+    left: 25px;
+    width: 12px;
+    height: 4px;
+    background: #8c76bb;
+    box-shadow: 18px 8px 0 #8c76bb, 36px 16px 0 #705991;
+  }
+
+  .house {
+    position: absolute;
+    bottom: 0;
+    left: 17px;
+    width: 82px;
+    height: 52px;
+    background: #59446a;
+    border: 4px solid #302641;
+    box-shadow: inset 0 -8px #443450;
+  }
+
+  .window {
+    position: absolute;
+    top: 13px;
+    left: 12px;
+    width: 17px;
+    height: 20px;
+    background: #ffdb75;
+    border: 3px solid #342942;
+    box-shadow: 0 0 15px #ffd76d99;
+  }
+
+  .window::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -1px;
+    width: 11px;
+    height: 3px;
+    background: #8c674f;
+  }
+
+  .window.right {
+    left: 48px;
+  }
+
+  .door {
+    position: absolute;
+    bottom: 0;
+    left: 32px;
+    width: 19px;
+    height: 29px;
+    background: #28253d;
+    border: 3px solid #362a48;
+  }
+
+  .door::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: 2px;
+    width: 3px;
+    height: 3px;
+    background: #ffd778;
+  }
+
+  .chimney {
+    position: absolute;
+    top: -1px;
+    left: 78px;
+    width: 12px;
+    height: 26px;
+    background: #4e3b5f;
+    border-top: 5px solid #806a96;
+  }
+
+  /* Ground */
+  .ground {
+    position: absolute;
+    z-index: 3;
+    bottom: 0;
+    width: 100%;
+    height: 27%;
+    background:
+      linear-gradient(180deg, #1a3a37 0 9%, transparent 9%),
+      repeating-linear-gradient(90deg, #18342e 0 12px, #1c3d33 12px 24px);
+    border-top: 4px solid #35594b;
+  }
+
+  .path {
+    position: absolute;
+    z-index: 4;
+    bottom: -10%;
+    left: 48%;
+    width: 34%;
+    height: 38%;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(
+      180deg, #28334a 0 12px, #242b40 12px 24px
+    );
+    clip-path: polygon(38% 0, 66% 0, 100% 100%, 0 100%);
+    opacity: .95;
+  }
+
+  .grass {
+    position: absolute;
+    z-index: 5;
+    bottom: 22%;
+    width: 6px;
+    height: 8px;
+    background: #83ba76;
+    box-shadow: 8px 3px 0 #467957, -4px 7px 0 #3a704b;
+  }
+
+  /* Glowing fireflies */
+  .firefly {
+    position: absolute;
+    z-index: 6;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c9ff75;
+    box-shadow: 0 0 7px 3px #a9ff6570, 0 0 16px #caff9c55;
+    animation: drift 5s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    0% { transform: translate(0, 0); opacity: .25; }
+    50% { opacity: 1; }
+    100% { transform: translate(18px, -28px); opacity: .55; }
+  }
+
+  /* Pixel mushrooms */
+  .mushroom {
+    position: absolute;
+    z-index: 7;
+    bottom: 22%;
+    width: 20px;
+    height: 21px;
+  }
+
+  .cap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 10px;
+    background: #b96dff;
+    clip-path: polygon(25% 0, 75% 0, 75% 25%, 100% 25%,
+      100% 75%, 0 75%, 0 25%, 25% 25%);
+    box-shadow: 0 0 10px #c16bff;
+  }
+
+  .stem {
+    position: absolute;
+    top: 9px;
+    left: 7px;
+    width: 7px;
+    height: 11px;
+    background: #c4aaff;
+    box-shadow: 0 0 8px #8e78ff88;
+  }
+
+  .mushroom.blue .cap {
+    background: #63bfff;
+    box-shadow: 0 0 12px #50baff;
+  }
+
+  .mushroom.blue .stem {
+    background: #9fe5ff;
+  }
+
+  /* Pixel girl */
+  #sprite {
+    position: absolute;
+    z-index: 12;
+    bottom: 20%;
+    left: 50%;
+    width: 36px;
+    height: 64px;
+    transform: translateX(-50%);
+    transform-origin: center bottom;
+    image-rendering: pixelated;
+    will-change: left;
+    pointer-events: none;
+  }
+
+  .girl {
+    position: relative;
+    width: 36px;
+    height: 64px;
+    filter: drop-shadow(0 0 5px #c79aff30);
+  }
+
+  .hair-back {
+    position: absolute;
+    top: 9px;
+    left: 5px;
+    width: 27px;
+    height: 25px;
+    background: #593322;
+    box-shadow: -4px 8px 0 #593322, 4px 12px 0 #44251f,
+      0 0 0 3px #3b241f;
+  }
+
+  .head {
+    position: absolute;
+    top: 8px;
+    left: 9px;
+    width: 19px;
+    height: 20px;
+    background: #f0bb8b;
+    box-shadow: 0 -4px 0 #70402b, 4px -4px 0 #70402b;
+  }
+
+  .fringe {
+    position: absolute;
+    top: 7px;
+    left: 8px;
+    width: 20px;
+    height: 8px;
+    background: #70402b;
+    box-shadow: 4px 4px 0 #70402b, -3px 3px 0 #70402b;
+  }
+
+  .eye {
+    position: absolute;
+    top: 17px;
+    left: 13px;
+    width: 3px;
+    height: 3px;
+    background: #302038;
+    box-shadow: 9px 0 #302038;
+  }
+
+  .dress {
+    position: absolute;
+    top: 29px;
+    left: 7px;
+    width: 23px;
+    height: 19px;
+    background: #9864e8;
+    clip-path: polygon(25% 0, 75% 0, 100% 100%, 0 100%);
+    box-shadow: inset 0 -5px #7044b6;
+  }
+
+  .collar {
+    position: absolute;
+    top: 28px;
+    left: 14px;
+    width: 9px;
+    height: 4px;
+    background: #f6d9ff;
+  }
+
+  .arm {
+    position: absolute;
+    top: 31px;
+    left: 3px;
+    width: 6px;
+    height: 13px;
+    background: #e8ad83;
+    box-shadow: 23px 0 #e8ad83;
+    transform-origin: top center;
+  }
+
+  .leg {
+    position: absolute;
+    top: 46px;
+    left: 10px;
+    width: 6px;
+    height: 10px;
+    background: #eab68d;
+    box-shadow: 10px 0 #eab68d;
+    transform-origin: top center;
+  }
+
+  .shoe {
+    position: absolute;
+    top: 54px;
+    left: 6px;
+    width: 10px;
+    height: 5px;
+    background: #28243d;
+    box-shadow: 10px 0 #28243d;
+  }
+
+  #sprite.walking .leg.left {
+    animation: step-left .26s steps(2, end) infinite alternate;
+  }
+
+  #sprite.walking .leg.right {
+    animation: step-right .26s steps(2, end) infinite alternate;
+  }
+
+  #sprite.walking .arm {
+    animation: arm-swing .26s steps(2, end) infinite alternate;
+  }
+
+  #sprite.walking .girl {
+    animation: bounce .26s steps(2, end) infinite alternate;
+  }
+
+  @keyframes step-left {
+    from { transform: rotate(24deg) translateY(0); }
+    to { transform: rotate(-24deg) translateY(2px); }
+  }
+
+  @keyframes step-right {
+    from { transform: rotate(-24deg) translateY(2px); }
+    to { transform: rotate(24deg) translateY(0); }
+  }
+
+  @keyframes arm-swing {
+    from { transform: rotate(-12deg); }
+    to { transform: rotate(12deg); }
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-2px); }
+  }
+
+  /* Small caption */
+  .caption {
+    position: absolute;
+    z-index: 15;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #aeb9ce;
+    font-size: 10px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    opacity: .8;
+    text-shadow: 0 0 8px #a98cff;
+    pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .emblem { font-size: 10px; }
+    .cottage { left: 72%; transform: translateX(-50%) scale(.8); transform-origin: bottom center; }
+    .moon { right: 14%; width: 34px; height: 34px; }
+    .moon::after { width: 33px; height: 33px; }
+    .caption { font-size: 8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star, .firefly, #sprite.walking .leg,
+    #sprite.walking .arm, #sprite.walking .girl {
+      animation-duration: 1s;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="meadow" aria-label="Magical pixel cottage meadow. Move your cursor to guide the girl.">
+
+  <div class="emblem"><span>🔮</span> Cottagecore Meadow</div>
+  <div class="moon"></div>
+
+  <div class="hill back"></div>
+  <div class="hill"></div>
+  <div class="forest"></div>
+
+  <div class="cottage">
+    <div class="chimney"></div>
+    <div class="roof"></div>
+    <div class="roof-shine"></div>
+    <div class="house">
+      <div class="window"></div>
+      <div class="window right"></div>
+      <div class="door"></div>
+    </div>
+  </div>
+
+  <div class="ground"></div>
+  <div class="path"></div>
+
+  <div class="mushroom" style="left:12%">
+    <div class="cap"></div><div class="stem"></div>
+  </div>
+  <div class="mushroom blue" style="left:23%; transform:scale(.75)">
+    <div class="cap"></div><div class="stem"></div>
+  </div>
+  <div class="mushroom blue" style="left:81%; transform:scale(1.1)">
+    <div class="cap"></div><div class="stem"></div>
+  </div>
+  <div class="mushroom" style="left:90%; transform:scale(.7)">
+    <div class="cap"></div><div class="stem"></div>
+  </div>
+
+  <div id="sprite" aria-label="Pixel girl">
+    <div class="girl">
+      <div class="hair-back"></div>
+      <div class="head"></div>
+      <div class="fringe"></div>
+      <div class="eye"></div>
+      <div class="collar"></div>
+      <div class="dress"></div>
+      <div class="arm"></div>
+      <div class="leg left"></div>
+      <div class="leg right"></div>
+      <div class="shoe"></div>
+    </div>
+  </div>
+
+  <div class="caption">✦ MOVE YOUR CURSOR TO EXPLORE ✦</div>
+</div>
+
+<script>
+(() => {
+  const meadow = document.getElementById('meadow');
+  const sprite = document.getElementById('sprite');
+
+  let targetX = 0;
+  let currentX = 0;
+  let lastX = 0;
+  let moving = false;
+
+  function setTarget(clientX) {
+    const rect = meadow.getBoundingClientRect();
+    const halfSprite = sprite.offsetWidth / 2;
+    const localX = clientX - rect.left;
+
+    targetX = Math.max(
+      halfSprite + 4,
+      Math.min(rect.width - halfSprite - 4, localX)
+    );
+  }
+
+  meadow.addEventListener('pointermove', (event) => {
+    setTarget(event.clientX);
+  });
+
+  meadow.addEventListener('pointerdown', (event) => {
+    setTarget(event.clientX);
+  });
+
+  // Touch users can guide the character by dragging.
+  meadow.addEventListener('touchmove', (event) => {
+    if (event.touches.length) {
+      setTarget(event.touches[0].clientX);
+    }
+  }, { passive: true });
+
+  function animate() {
+    const difference = targetX - currentX;
+    currentX += difference * 0.085;
+
+    if (Math.abs(difference) > 0.7) {
+      moving = true;
+      sprite.classList.add('walking');
+
+      // The pixel girl faces the direction she is travelling.
+      const facing = difference < 0 ? -1 : 1;
+      sprite.style.transform =
+        `translateX(-50%) scaleX(${facing})`;
+    } else {
+      moving = false;
+      sprite.classList.remove('walking');
+      currentX = targetX;
+    }
+
+    sprite.style.left = currentX + 'px';
+    lastX = currentX;
+
+    requestAnimationFrame(animate);
+  }
+
+  function resize() {
+    const rect = meadow.getBoundingClientRect();
+    if (currentX === 0) {
+      currentX = rect.width * 0.48;
+      targetX = currentX;
+      sprite.style.left = currentX + 'px';
+    } else {
+      targetX = Math.max(20, Math.min(rect.width - 20, targetX));
+      currentX = Math.max(20, Math.min(rect.width - 20, currentX));
+    }
+  }
+
+  // Deterministic star field.
+  let seed = 241;
+  function random() {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  }
+
+  for (let i = 0; i < 58; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = (random() * 100) + '%';
+    star.style.top = (random() * 72) + '%';
+    star.style.animationDelay = (random() * 3) + 's';
+    star.style.opacity = (0.3 + random() * 0.7).toFixed(2);
+    meadow.appendChild(star);
+  }
+
+  for (let i = 0; i < 12; i++) {
+    const fly = document.createElement('div');
+    fly.className = 'firefly';
+    fly.style.left = (5 + random() * 90) + '%';
+    fly.style.top = (25 + random() * 60) + '%';
+    fly.style.animationDelay = (random() * -5) + 's';
+    fly.style.animationDuration = (3 + random() * 4) + 's';
+    meadow.appendChild(fly);
+  }
+
+  for (let i = 0; i < 26; i++) {
+    const grass = document.createElement('div');
+    grass.className = 'grass';
+    grass.style.left = (random() * 100) + '%';
+    grass.style.bottom = (16 + random() * 13) + '%';
+    meadow.appendChild(grass);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(animate);
+})();
+</script>
+</body>
+</html>
